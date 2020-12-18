@@ -11,16 +11,17 @@ for i in range(N):
     for j in range(N):
         value = lines[j][i]
         if value == '#':
-            lights.add((j, i, 0))
+            lights.add((j, i, 0, 0))
 
 def neighbors(point):
     for i in range(-1, 2):
         for j in range(-1, 2):
             for k in range(-1, 2):
-                if i == 0 and j == 0 and k == 0:
-                    pass
-                else:
-                    yield (point[0] + i, point[1] + j, point[2] + k)
+                for l in range(-1, 2):
+                    if i == 0 and j == 0 and k == 0 and l == 0:
+                        pass
+                    else:
+                        yield (point[0] + i, point[1] + j, point[2] + k, point[3] + l)
 
 def step():
     global lights
@@ -42,8 +43,8 @@ def step():
 
 print(data)
 
-n = list(neighbors((0, 0, 0)))
-assert (0, 0, 0) not in n
+n = list(neighbors((0, 0, 0, 0)))
+assert (0, 0, 0, 0) not in n
 
 for i in range(6):
     step()
