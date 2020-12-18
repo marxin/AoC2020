@@ -32,7 +32,7 @@ def encapsulate():
     i = 0
     while i < len(tokens):
         v = tokens[i]
-        if (v == '+' or v == '*') and (tokens[i - 1] != '(' or tokens[i + 1] != ')'):
+        if v == '+' and (tokens[i - 1] != '(' or tokens[i + 1] != ')'):
             tokens.insert(findend(i + 1) + 1, ')')
             tokens.insert(findstart(i - 1), '(')
             i += 1
