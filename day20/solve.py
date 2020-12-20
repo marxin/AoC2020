@@ -65,7 +65,7 @@ def place_one(tile):
     return False
 
 
-moves = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+moves = [(0, -1), (1, 0), (0, 1), (-1, 0)]
 tiles = tiles[1:]
 
 while tiles:
@@ -136,7 +136,7 @@ def crop_to_8(image):
     lines = image[1:-1]
     return [l[1:-1] for l in lines]
 
-output = [''] * 3 * 8
+output = [''] * (max_x - min_x + 1) * 8
 
 print(min_x, min_y, max_x, max_y)
 
@@ -189,7 +189,7 @@ def find_monster(monster):
     return mcount
 
 print(''.join(output).count('#'))
-mcount = find_monster(monster)
+mcount = find_monster(flip_image(monster))
 
 print('\n'.join((monster)))
 print()
