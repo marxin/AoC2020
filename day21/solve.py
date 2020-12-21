@@ -38,6 +38,9 @@ def report(mapping):
     for lhs, rhs in rules:
         total += len(lhs - set(mapping.values()))
     print(total)
+    s = sorted(mapping.items(), key=lambda x:x[0])
+    print(s)
+    print(','.join([x[1] for x in s]))
 
 def solve(mapping, i):
     print(len(mapping), mapping)
