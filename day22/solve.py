@@ -23,8 +23,6 @@ def play(p1, p2, d):
     if origt in cache:
         return cache[origt]
     origt2 = totuple(p2, p1)
-    if origt2 in cache:
-        return not cache[origt2]
 
     print(f'Play {d} ==')
     #print(p1, p2, len(cache))
@@ -51,7 +49,7 @@ def play(p1, p2, d):
         p2 = p2[1:]
 
         if len(p1) >= c1 and len(p2) >= c2:
-            first = play(p1.copy(), p2.copy(), d+1)
+            first = play(p1.copy()[:c1], p2.copy()[:c2], d+1)
         else:
             first = c1 > c2
 
