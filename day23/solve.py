@@ -1,48 +1,73 @@
 #!/usr/bin/env python3
 
-from collections import deque
+class Cup:
+    def __init__(self, value):
+        self.value = value
+        self.right = None
 
-data = deque([3, 8,  9,  1,  2,  5,  4,  6,  7])
-#data = deque([5, 9, 8, 1, 6, 2, 7, 3, 4])
+    def link(self, other):
+        assert self != other
+        other.right = self.right
+        self.right = other
 
-#while len(data) != 1000000:
-#    data.append(len(data))
+    def __repr__(self):
+        return str(self.value)
 
-def findnext(value, chunk):
-    global data
+data = [3, 8, 9,  1,  2,  5,  4,  6,  7]
+data = [5, 9, 8, 1, 6, 2, 7, 3, 4]
+
+while len(data) != 1000 * 1000:
+    data.append(len(data) + 1)
+
+cups = [Cup(c) for c in data]
+value_to_cup = {}
+root = cups[0]
+
+for i, c in enumerate(cups):
+    value_to_cup[c.value] = c
+    if i + 1 >= len(cups):
+        cups[len(cups) - 1].right = cups[0]
+    else:
+        c.right = cups[i + 1]
+
+def find_smaller(value, chunk):
+    chunk_values = [x.value for x in chunk]
     value -= 1
     while True:
         if value == 0:
-            value = len(data) + 3
-        if value not in chunk:
+            value = len(data)
+        if not value in chunk_values:
             return value
         value -= 1
 
+def printlist():
+    p = root
+    for i in range(len(cups)):
+        print(f'{p} ', end='')
+        p = p.right
+    print()
+
 def move():
-    global data
-    #print(data)
-    v = data.popleft()
-    chunk = []
-    chunk.append(data.popleft())
-    chunk.append(data.popleft())
-    chunk.append(data.popleft())
-    data.appendleft(v)
+    global root
+    chunk = [root.right.right.right, root.right.right, root.right]
+    # printlist()
+    # print(chunk)
+    root.right = chunk[0].right
 
-    index = data.index(findnext(v, chunk))
-    for i in range(3):
-        data.insert(index + 1, chunk.pop())
-    data.rotate(-1)
+    smaller = find_smaller(root.value, chunk)
+    pivot = value_to_cup[smaller]
 
-for i in range(100):
-    print(i)
+    for c in chunk:
+        pivot.link(c)
+    root = root.right
+
+for i in range(10 * 1000 * 1000):
+    if i % 100000 == 0:
+        print(i)
     move()
+    # printlist()
 
-s = ''
-l = len(data)
-start = data.index(1)
+v0 = value_to_cup[1].right.value
+v1 = value_to_cup[1].right.right.value
 
-for i in range(l):
-    j = (start + i) % l
-    s += str(data[j])
-
-print(s[1:])
+print(v0, v1, v0 * v1)
