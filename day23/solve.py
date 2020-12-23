@@ -2,30 +2,39 @@
 
 from collections import deque
 
-data = [3, 8,  9,  1,  2,  5,  4,  6,  7]
-data = [5, 9, 8, 1, 6, 2, 7, 3, 4]
+data = deque([3, 8,  9,  1,  2,  5,  4,  6,  7])
+#data = deque([5, 9, 8, 1, 6, 2, 7, 3, 4])
 
-def findnext(value):
+#while len(data) != 1000000:
+#    data.append(len(data))
+
+def findnext(value, chunk):
     global data
     value -= 1
-    while value > 0:
-        if value in data:
+    while True:
+        if value == 0:
+            value = len(data) + 3
+        if value not in chunk:
             return value
         value -= 1
-    return max(data)
 
 def move():
     global data
-    print(data)
-    v = data[0]
-    chunk = data[1:4]
-    data = data[:1] + data[4:]
-    index = data.index(findnext(v))
+    #print(data)
+    v = data.popleft()
+    chunk = []
+    chunk.append(data.popleft())
+    chunk.append(data.popleft())
+    chunk.append(data.popleft())
+    data.appendleft(v)
+
+    index = data.index(findnext(v, chunk))
     for i in range(3):
         data.insert(index + 1, chunk.pop())
-    data = data[1:] + data[:1]
+    data.rotate(-1)
 
 for i in range(100):
+    print(i)
     move()
 
 s = ''
